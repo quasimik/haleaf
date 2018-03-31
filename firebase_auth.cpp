@@ -1,37 +1,18 @@
-// Authorization Gateway (globals)
-firebase::App app = firebase::App::Create(firebase::AppOptions);
-firebase::auth::Auth* auth = firebase::auth::Auth::GetAuth(app);
-
-// Authorization State Listener. Handles when user signs out and in.
-class AuthStateList : public firebase::auth::AuthStateListener {
-public:
-  void OnAuthStateChanged(firebase::auth::Auth* auth) override {
-    firebase::auth::User* user = auth->current_user();
-    if (user != nullptr) {
-      // Signed in
-      /* user name */ user->DisplayName();
-      /* email address */ user->Email();
-      /* user photo */ user->PhotoUrl();
-    } else {
-      // Signed out
-      return;
-    }
-    return;
-  }
-};
-
-// Attach state listener
-AuthStateList stateListener;
-auth->AddStateListener(stateListener);
+#include "firebase/app.h"
+#include "firebase/auth.h"
+#include "firebase_auth.h"
 
 // Callback and Helper Method Forward Declarations
 void userCreateCallback(const firebase::Future<firebase::auth::User*>&, void*);
 void userSigninCallback(const firebase::Future<firebase::auth::User*>&, void*);
 void userLoggedIn(void*);
 
+// Attach state listener
+AuthStateList stateListener;
+auth->AddAuthStateListener(&stateListener);
 
 // Create User Method
-void generateUser(std::string email, std::string password) {
+void generateUser(char* email, char* password) {
   firebase::Future<firebase::auth::User*> result =
     auth->SignInWithEmailAndPassword(email, password);
 
@@ -54,7 +35,7 @@ void userCreateCallback(const firebase::Future<firebase::auth::User*>& result, v
 }
 
 // Sign-in (existing user) Method
-void signinUser(std::email, std::password) {
+void signinUser(char* email, char* password) {
   firebase::Future<firebase::auth::User*> result =
     auth->SignInWithEmailAndPassword(email, password);
 
@@ -80,4 +61,18 @@ void userSigninCallback(const firebase::Future<firebase::auth::User*>& result, v
 void userLoggedIn(void* user_data) {
   // Handle user here
   return;
+}
+
+// AuthStateChange Method
+void AuthStateList::OnAuthStateChanged(firebase::auth::Auth* auth) {
+  firebase::auth::User* user = auth->current_user();
+  if (user != nullptr) {
+    // User signed in
+    /* user name */ user->DisplayName();
+    /* email */ user->Email();
+    /* user photo */ user->PhotoURL();
+  } else {
+    // User signed out
+    return;
+  }
 }
