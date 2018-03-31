@@ -57,3 +57,11 @@ typings/
 # dotenv environment variables file
 .env
 
+
+
+
+TensorFlow
+bin
+include
+lib
+pip-selfcheck.json
