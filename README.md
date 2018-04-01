@@ -2,5 +2,6 @@
 
 ## Installation
 
-1. Install TensorFlow
-2. ???
+1. Install Python 3
+2. Install Google Cloud SDK
+3. ???

@@ -61,3 +61,7 @@ typings/
 
 # Virtualenv
 venv
+
+
+# GCP service account credentials
+mlmodel/gcp-credentials.json
