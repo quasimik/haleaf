@@ -22,7 +22,7 @@ columns = [ [rows[i] for rows in columns] for i in range(0, num_columns - 1) ]
 newcol = []
 for col in columns:
 	if col[0] == "weight_kg":
-		base = round(stat.mean(map(int, col[1:])) + 1), -1) - 40
+		base = round(stat.mean( [ x for x in map(int, col[1:]) if x != -1 ] ) + 1), -1) - 40
 		categorized = [ round((x - base) / 10 )) for x in col[1:] ]
 		categorized[:] = [ 1 if x < 0 else x + 2 for x in categorized ]
 		categorized[:] = [ 11 if x > 11 else x for x in categorized ]
