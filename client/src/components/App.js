@@ -1,7 +1,16 @@
 import React, { Component } from "react";
 import "./App.css";
 import { db, auth, provider } from "../firebase";
-import { Header, Button, Segment, Icon, Container, Grid, Menu, Input, Select, Table } from "semantic-ui-react";
+import { Header, 
+         Button, 
+         Segment, 
+         Icon, 
+         Container, 
+         Grid, 
+         Menu, 
+         Input, 
+         Select, 
+         Table } from "semantic-ui-react";
 
 const initData = {
   age_group: -1,
@@ -31,6 +40,51 @@ const initData = {
   kidney_disease: -1,
   diabetes: -1
 }
+
+const dataToVector = (data) => {
+  if(data) {
+    var vector = [  
+      data.age_group,
+      data.height_cm,
+      data.weight_kg,
+      data.sex,
+      data.married,
+      data.education,
+      data.employment,
+      data.income,
+      data.own_home,
+      data.veteran,
+      data.alcohol,
+      data.smoke,
+      data.race,
+      data.state,
+      data.high_blood_pressure,
+      data.high_blood_cholesterol,
+      data.heart_attack,
+      data.angina,
+      data.asthma,
+      data.skin_cancer,
+      data.other_cancer,
+      data.copd,
+      data.arthritis,
+      data.depression,
+      data.kidney_disease,
+      data.diabetes
+    ];
+    for(var i=0; i<vector.length; i++) {
+      if(isNaN(vector[i])) {
+        vector[i] = -1;
+      }
+    }
+    console.log(vector);
+    return vector;
+  }
+  else {
+    return initData;
+  }
+}
+
+dataToVector({});
 
 const age_group = [
   {value: -1, text: "Select"},
@@ -301,7 +355,8 @@ class App extends Component {
       user: null,
       uid: null,
       ref: null,
-      data: initData
+      data: initData,
+      tab: "demo"
     }
   }
 
@@ -345,13 +400,16 @@ class App extends Component {
     }
   }
 
+  handleTab = (e, { name }) => this.setState({ tab: name });
+
   updateData = () => {
     const { data, ref } = this.state;
     ref.set(data);
+    dataToVector(data);
   }
 
   render() {
-    var { data } = this.state;
+    var { data, tab } = this.state;
     if (!data) data = initData;
 
     // Logged in
@@ -368,374 +426,381 @@ class App extends Component {
           <Grid stackable centered columns={2} relaxed="very" style={{marginTop:"1em"}}>
             <Grid.Column>
               <Container text>
-                <Header attached="top" inverted content="Demographics"/>
-                <Table attached definition>
-                  <Table.Body>
-                    <Table.Row>
-                      <Table.Cell textAlign="right">
-                        Age Group
-                      </Table.Cell>
-                      <Table.Cell>
-                        <Select fluid options={age_group} value={data.age_group} 
-                          onChange={(e, { value }) => {
-                            data.age_group = value;
-                            this.setState({ data });
-                          }}
-                        />
-                      </Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                      <Table.Cell textAlign="right">
-                        Height
-                      </Table.Cell>
-                      <Table.Cell>
-                        <Input fluid value={(data.height_cm < 1) ? "" : data.height_cm} error={isNaN(data.height_cm) || !data.height_cm}
-                          label={{ basic: true, content: "cm" }}
-                          labelPosition="right"
-                          onChange={(e, { value }) => {
-                            (value === "") ? data.height_cm = -1 : data.height_cm = Number(value);
-                            if (data.height_cm) {
+                <Menu attached='top' tabular inverted size="large">
+                  <Menu.Item name="demo" content='Demographics' active={tab === 'demo'} onClick={this.handleTab}/>
+                  <Menu.Item name="lifestyle" content='Lifestyle' active={tab === 'lifestyle'} onClick={this.handleTab}/>
+                  <Menu.Item name="hist" content='Medical History' active={tab === 'hist'} onClick={this.handleTab}/>
+                </Menu>
+                {tab === 'demo' &&
+                  <Table attached definition>
+                    <Table.Body>
+                      <Table.Row>
+                        <Table.Cell textAlign="right">
+                          Age Group
+                        </Table.Cell>
+                        <Table.Cell>
+                          <Select fluid options={age_group} value={data.age_group} 
+                            onChange={(e, { value }) => {
+                              data.age_group = value;
                               this.setState({ data });
-                            }
-                          }}/>
-                      </Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                      <Table.Cell textAlign="right">
-                        Weight
-                      </Table.Cell>
-                      <Table.Cell>
-                        <Input fluid value={(data.weight_kg < 1) ? "" : data.weight_kg} error={isNaN(data.weight_kg) || !data.weight_kg}
-                          label={{ basic: true, content: "kg" }}
-                          labelPosition="right"
-                          onChange={(e, { value }) => {
-                            (value === "") ? data.weight_kg = -1 : data.weight_kg = Number(value);
-                            if (data.weight_kg) {
+                            }}
+                          />
+                        </Table.Cell>
+                      </Table.Row>
+                      <Table.Row>
+                        <Table.Cell textAlign="right">
+                          Height
+                        </Table.Cell>
+                        <Table.Cell>
+                          <Input fluid value={(data.height_cm < 1) ? "" : data.height_cm} error={isNaN(data.height_cm) || !data.height_cm}
+                            label={{ basic: true, content: "cm" }}
+                            labelPosition="right"
+                            onChange={(e, { value }) => {
+                              (value === "") ? data.height_cm = -1 : data.height_cm = Number(value);
+                              if (data.height_cm) {
+                                this.setState({ data });
+                              }
+                            }}/>
+                        </Table.Cell>
+                      </Table.Row>
+                      <Table.Row>
+                        <Table.Cell textAlign="right">
+                          Weight
+                        </Table.Cell>
+                        <Table.Cell>
+                          <Input fluid value={(data.weight_kg < 1) ? "" : data.weight_kg} error={isNaN(data.weight_kg) || !data.weight_kg}
+                            label={{ basic: true, content: "kg" }}
+                            labelPosition="right"
+                            onChange={(e, { value }) => {
+                              (value === "") ? data.weight_kg = -1 : data.weight_kg = Number(value);
+                              if (data.weight_kg) {
+                                this.setState({ data });
+                              }
+                            }}/>
+                        </Table.Cell>
+                      </Table.Row>
+                      <Table.Row>
+                        <Table.Cell textAlign="right">
+                          Sex
+                        </Table.Cell>
+                        <Table.Cell>
+                           <Select fluid options={sex} value={data.sex} 
+                            onChange={(e, { value }) => {
+                              data.sex = value;
                               this.setState({ data });
-                            }
-                          }}/>
-                      </Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                      <Table.Cell textAlign="right">
-                        Sex
-                      </Table.Cell>
-                      <Table.Cell>
-                         <Select fluid options={sex} value={data.sex} 
-                          onChange={(e, { value }) => {
-                            data.sex = value;
-                            this.setState({ data });
-                          }}
-                        />
-                      </Table.Cell>
-                    </Table.Row>                  
-                   <Table.Row>
-                      <Table.Cell textAlign="right">
-                        Current Marital Status
-                      </Table.Cell>
-                      <Table.Cell>
-                         <Select fluid options={married} value={data.married} 
-                          onChange={(e, { value }) => {
-                            data.married = value;
-                            this.setState({ data });
-                          }}
-                        />
-                      </Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                      <Table.Cell textAlign="right">
-                        Highest Attained Education Level
-                      </Table.Cell>
-                      <Table.Cell>
-                         <Select fluid options={education} value={data.education} 
-                          onChange={(e, { value }) => {
-                            data.education = value;
-                            this.setState({ data });
-                          }}
-                        />
-                      </Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                      <Table.Cell textAlign="right">
-                        Current Employment Status
-                      </Table.Cell>
-                      <Table.Cell>
-                         <Select fluid options={employment} value={data.employment} 
-                          onChange={(e, { value }) => {
-                            data.employment = value;
-                            this.setState({ data });
-                          }}
-                        />
-                      </Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                      <Table.Cell textAlign="right">
-                        Income Level
-                      </Table.Cell>
-                      <Table.Cell>
-                         <Select fluid options={income} value={data.income} 
-                          onChange={(e, { value }) => {
-                            data.income = value;
-                            this.setState({ data });
-                          }}
-                        />
-                      </Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                      <Table.Cell textAlign="right">
-                        Housing Status
-                      </Table.Cell>
-                      <Table.Cell>
-                         <Select fluid options={own_home} value={data.own_home} 
-                          onChange={(e, { value }) => {
-                            data.own_home = value;
-                            this.setState({ data });
-                          }}
-                        />
-                      </Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                      <Table.Cell textAlign="right">
-                        Are you a veteran?
-                      </Table.Cell>
-                      <Table.Cell>
-                        <Select fluid options={veteran} value={data.veteran} 
-                          onChange={(e, { value }) => {
-                            data.veteran = value;
-                            this.setState({ data });
-                          }}
-                        />
-                      </Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                      <Table.Cell textAlign="right">
-                        Ethnicity
-                      </Table.Cell>
-                      <Table.Cell>
-                         <Select fluid search options={race} value={data.race} 
-                          onChange={(e, { value }) => {
-                            data.race = value;
-                            this.setState({ data });
-                          }}
-                        />
-                      </Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                      <Table.Cell textAlign="right">
-                        State of current residence
-                      </Table.Cell>
-                      <Table.Cell>
-                         <Select fluid search options={state} value={data.state} 
-                          onChange={(e, { value }) => {
-                            data.state = value;
-                            this.setState({ data });
-                          }}
-                        />
-                      </Table.Cell>
-                    </Table.Row>
-                  </Table.Body>
-                </Table>
-                <Header attached inverted content="Lifestyle"/>
-                <Table attached definition>
-                  <Table.Body>
-                    <Table.Row>
-                      <Table.Cell textAlign="right">
-                        How many times were you intoxicated in the last month?
-                      </Table.Cell>
-                      <Table.Cell>
-                        <Input fluid value={(data.alcohol < 0) ? "" : data.alcohol} error={isNaN(data.alcohol)}
-                          label={{ basic: true, content: "times" }}
-                          labelPosition="right"
-                          onChange={(e, { value }) => {
-                            (value === "") ? data.alcohol = -1 : data.alcohol = Number(value);
-                            if (!isNaN(value)) {
+                            }}
+                          />
+                        </Table.Cell>
+                      </Table.Row>                  
+                     <Table.Row>
+                        <Table.Cell textAlign="right">
+                          Current Marital Status
+                        </Table.Cell>
+                        <Table.Cell>
+                           <Select fluid options={married} value={data.married} 
+                            onChange={(e, { value }) => {
+                              data.married = value;
                               this.setState({ data });
-                            }
-                          }}/>
-                      </Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                      <Table.Cell textAlign="right">
-                        How often do you smoke?
-                      </Table.Cell>
-                      <Table.Cell>
-                         <Select fluid options={smoke} value={data.smoke} 
-                          onChange={(e, { value }) => {
-                            data.smoke = value;
-                            this.setState({ data });
-                          }}
-                        />
-                      </Table.Cell>
-                    </Table.Row>
-                  </Table.Body>
-                </Table>
-                <Header attached inverted content="Do you have a history of:"/>
-                <Table attached="bottom" definition>
-                  <Table.Body>
-                    <Table.Row>
-                      <Table.Cell textAlign="right">
-                        High Blood Pressure/Hypertension
-                      </Table.Cell>
-                      <Table.Cell>
-                         <Select fluid options={high_blood_pressure} value={data.high_blood_pressure} 
-                          onChange={(e, { value }) => {
-                            data.high_blood_pressure = value;
-                            this.setState({ data });
-                          }}
-                        />
-                      </Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                      <Table.Cell textAlign="right">
-                        High Cholesterol
-                      </Table.Cell>
-                      <Table.Cell>
-                         <Select fluid options={high_blood_cholesterol} value={data.high_blood_cholesterol} 
-                          onChange={(e, { value }) => {
-                            data.high_blood_cholesterol = value;
-                            this.setState({ data });
-                          }}
-                        />
-                      </Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                      <Table.Cell textAlign="right">
-                        Cardiac Arrest/Heart Attack
-                      </Table.Cell>
-                      <Table.Cell>
-                         <Select fluid options={heart_attack} value={data.heart_attack} 
-                          onChange={(e, { value }) => {
-                            data.heart_attack = value;
-                            this.setState({ data });
-                          }}
-                        />
-                      </Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                      <Table.Cell textAlign="right">
-                        Angina
-                      </Table.Cell>
-                      <Table.Cell>
-                         <Select fluid options={angina} value={data.angina} 
-                          onChange={(e, { value }) => {
-                            data.angina = value;
-                            this.setState({ data });
-                          }}
-                        />
-                      </Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                      <Table.Cell textAlign="right">
-                        Asthma
-                      </Table.Cell>
-                      <Table.Cell>
-                         <Select fluid options={asthma} value={data.asthma} 
-                          onChange={(e, { value }) => {
-                            data.asthma = value;
-                            this.setState({ data });
-                          }}
-                        />
-                      </Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                      <Table.Cell textAlign="right">
-                        Skin Cancer/Melanoma
-                      </Table.Cell>
-                      <Table.Cell>
-                         <Select fluid options={skin_cancer} value={data.skin_cancer} 
-                          onChange={(e, { value }) => {
-                            data.skin_cancer = value;
-                            this.setState({ data });
-                          }}
-                        />
-                      </Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                      <Table.Cell textAlign="right">
-                        Other Cancers
-                      </Table.Cell>
-                      <Table.Cell>
-                         <Select fluid options={other_cancer} value={data.other_cancer} 
-                          onChange={(e, { value }) => {
-                            data.other_cancer = value;
-                            this.setState({ data });
-                          }}
-                        />
-                      </Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                      <Table.Cell collapsing textAlign="right">
-                        Chronic Obstructive Pulmonary Disease (COPD)
-                      </Table.Cell>
-                      <Table.Cell>
-                         <Select fluid options={copd} value={data.copd} 
-                          onChange={(e, { value }) => {
-                            data.copd = value;
-                            this.setState({ data });
-                          }}
-                        />
-                      </Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                      <Table.Cell textAlign="right">
-                        Arthritis
-                      </Table.Cell>
-                      <Table.Cell>
-                         <Select fluid options={arthritis} value={data.arthritis} 
-                          onChange={(e, { value }) => {
-                            data.arthritis = value;
-                            this.setState({ data });
-                          }}
-                        />
-                      </Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                      <Table.Cell textAlign="right">
-                        Depression
-                      </Table.Cell>
-                      <Table.Cell>
-                         <Select fluid options={depression} value={data.depression} 
-                          onChange={(e, { value }) => {
-                            data.depression = value;
-                            this.setState({ data });
-                          }}
-                        />
-                      </Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                      <Table.Cell textAlign="right">
-                        Kidney Diseases
-                      </Table.Cell>
-                      <Table.Cell>
-                         <Select fluid options={kidney_disease} value={data.kidney_disease} 
-                          onChange={(e, { value }) => {
-                            data.kidney_disease = value;
-                            this.setState({ data });
-                          }}
-                        />
-                      </Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                      <Table.Cell textAlign="right">
-                        Diabetes
-                      </Table.Cell>
-                      <Table.Cell>
-                         <Select fluid options={diabetes} value={data.diabetes} 
-                          onChange={(e, { value }) => {
-                            data.diabetes = value;
-                            this.setState({ data });
-                          }}
-                        />
-                      </Table.Cell>
-                    </Table.Row>
-                  </Table.Body>
-                </Table>
-                <Button primary size="large" fluid onClick={this.updateData}>Save Info</Button>
+                            }}
+                          />
+                        </Table.Cell>
+                      </Table.Row>
+                      <Table.Row>
+                        <Table.Cell textAlign="right">
+                          Highest Attained Education Level
+                        </Table.Cell>
+                        <Table.Cell>
+                           <Select fluid options={education} value={data.education} 
+                            onChange={(e, { value }) => {
+                              data.education = value;
+                              this.setState({ data });
+                            }}
+                          />
+                        </Table.Cell>
+                      </Table.Row>
+                      <Table.Row>
+                        <Table.Cell textAlign="right">
+                          Current Employment Status
+                        </Table.Cell>
+                        <Table.Cell>
+                           <Select fluid options={employment} value={data.employment} 
+                            onChange={(e, { value }) => {
+                              data.employment = value;
+                              this.setState({ data });
+                            }}
+                          />
+                        </Table.Cell>
+                      </Table.Row>
+                      <Table.Row>
+                        <Table.Cell textAlign="right">
+                          Income Level
+                        </Table.Cell>
+                        <Table.Cell>
+                           <Select fluid options={income} value={data.income} 
+                            onChange={(e, { value }) => {
+                              data.income = value;
+                              this.setState({ data });
+                            }}
+                          />
+                        </Table.Cell>
+                      </Table.Row>
+                      <Table.Row>
+                        <Table.Cell textAlign="right">
+                          Housing Status
+                        </Table.Cell>
+                        <Table.Cell>
+                           <Select fluid options={own_home} value={data.own_home} 
+                            onChange={(e, { value }) => {
+                              data.own_home = value;
+                              this.setState({ data });
+                            }}
+                          />
+                        </Table.Cell>
+                      </Table.Row>
+                      <Table.Row>
+                        <Table.Cell textAlign="right">
+                          Are you a veteran?
+                        </Table.Cell>
+                        <Table.Cell>
+                          <Select fluid options={veteran} value={data.veteran} 
+                            onChange={(e, { value }) => {
+                              data.veteran = value;
+                              this.setState({ data });
+                            }}
+                          />
+                        </Table.Cell>
+                      </Table.Row>
+                      <Table.Row>
+                        <Table.Cell textAlign="right">
+                          Ethnicity
+                        </Table.Cell>
+                        <Table.Cell>
+                           <Select fluid search options={race} value={data.race} 
+                            onChange={(e, { value }) => {
+                              data.race = value;
+                              this.setState({ data });
+                            }}
+                          />
+                        </Table.Cell>
+                      </Table.Row>
+                      <Table.Row>
+                        <Table.Cell textAlign="right">
+                          State of current residence
+                        </Table.Cell>
+                        <Table.Cell>
+                           <Select fluid search options={state} value={data.state} 
+                            onChange={(e, { value }) => {
+                              data.state = value;
+                              this.setState({ data });
+                            }}
+                          />
+                        </Table.Cell>
+                      </Table.Row>
+                    </Table.Body>
+                  </Table>
+                }
+                {tab === 'lifestyle' &&
+                  <Table attached definition>
+                    <Table.Body>
+                      <Table.Row>
+                        <Table.Cell textAlign="right">
+                          How many times were you intoxicated in the last month?
+                        </Table.Cell>
+                        <Table.Cell>
+                          <Input fluid value={(data.alcohol < 0) ? "" : data.alcohol} error={isNaN(data.alcohol)}
+                            label={{ basic: true, content: "times" }}
+                            labelPosition="right"
+                            onChange={(e, { value }) => {
+                              (value === "") ? data.alcohol = -1 : data.alcohol = Number(value);
+                              if (!isNaN(value)) {
+                                this.setState({ data });
+                              }
+                            }}/>
+                        </Table.Cell>
+                      </Table.Row>
+                      <Table.Row>
+                        <Table.Cell textAlign="right">
+                          How often do you smoke?
+                        </Table.Cell>
+                        <Table.Cell>
+                           <Select fluid options={smoke} value={data.smoke} 
+                            onChange={(e, { value }) => {
+                              data.smoke = value;
+                              this.setState({ data });
+                            }}
+                          />
+                        </Table.Cell>
+                      </Table.Row>
+                    </Table.Body>
+                  </Table>
+                }
+                {tab === 'hist' &&
+                  <Table attached="bottom" definition>
+                    <Table.Body>
+                      <Table.Row>
+                        <Table.Cell textAlign="right">
+                          High Blood Pressure/Hypertension
+                        </Table.Cell>
+                        <Table.Cell>
+                           <Select fluid options={high_blood_pressure} value={data.high_blood_pressure} 
+                            onChange={(e, { value }) => {
+                              data.high_blood_pressure = value;
+                              this.setState({ data });
+                            }}
+                          />
+                        </Table.Cell>
+                      </Table.Row>
+                      <Table.Row>
+                        <Table.Cell textAlign="right">
+                          High Cholesterol
+                        </Table.Cell>
+                        <Table.Cell>
+                           <Select fluid options={high_blood_cholesterol} value={data.high_blood_cholesterol} 
+                            onChange={(e, { value }) => {
+                              data.high_blood_cholesterol = value;
+                              this.setState({ data });
+                            }}
+                          />
+                        </Table.Cell>
+                      </Table.Row>
+                      <Table.Row>
+                        <Table.Cell textAlign="right">
+                          Cardiac Arrest/Heart Attack
+                        </Table.Cell>
+                        <Table.Cell>
+                           <Select fluid options={heart_attack} value={data.heart_attack} 
+                            onChange={(e, { value }) => {
+                              data.heart_attack = value;
+                              this.setState({ data });
+                            }}
+                          />
+                        </Table.Cell>
+                      </Table.Row>
+                      <Table.Row>
+                        <Table.Cell textAlign="right">
+                          Angina
+                        </Table.Cell>
+                        <Table.Cell>
+                           <Select fluid options={angina} value={data.angina} 
+                            onChange={(e, { value }) => {
+                              data.angina = value;
+                              this.setState({ data });
+                            }}
+                          />
+                        </Table.Cell>
+                      </Table.Row>
+                      <Table.Row>
+                        <Table.Cell textAlign="right">
+                          Asthma
+                        </Table.Cell>
+                        <Table.Cell>
+                           <Select fluid options={asthma} value={data.asthma} 
+                            onChange={(e, { value }) => {
+                              data.asthma = value;
+                              this.setState({ data });
+                            }}
+                          />
+                        </Table.Cell>
+                      </Table.Row>
+                      <Table.Row>
+                        <Table.Cell textAlign="right">
+                          Skin Cancer/Melanoma
+                        </Table.Cell>
+                        <Table.Cell>
+                           <Select fluid options={skin_cancer} value={data.skin_cancer} 
+                            onChange={(e, { value }) => {
+                              data.skin_cancer = value;
+                              this.setState({ data });
+                            }}
+                          />
+                        </Table.Cell>
+                      </Table.Row>
+                      <Table.Row>
+                        <Table.Cell textAlign="right">
+                          Other Cancers
+                        </Table.Cell>
+                        <Table.Cell>
+                           <Select fluid options={other_cancer} value={data.other_cancer} 
+                            onChange={(e, { value }) => {
+                              data.other_cancer = value;
+                              this.setState({ data });
+                            }}
+                          />
+                        </Table.Cell>
+                      </Table.Row>
+                      <Table.Row>
+                        <Table.Cell collapsing textAlign="right">
+                          Chronic Obstructive Pulmonary Disease (COPD)
+                        </Table.Cell>
+                        <Table.Cell>
+                           <Select fluid options={copd} value={data.copd} 
+                            onChange={(e, { value }) => {
+                              data.copd = value;
+                              this.setState({ data });
+                            }}
+                          />
+                        </Table.Cell>
+                      </Table.Row>
+                      <Table.Row>
+                        <Table.Cell textAlign="right">
+                          Arthritis
+                        </Table.Cell>
+                        <Table.Cell>
+                           <Select fluid options={arthritis} value={data.arthritis} 
+                            onChange={(e, { value }) => {
+                              data.arthritis = value;
+                              this.setState({ data });
+                            }}
+                          />
+                        </Table.Cell>
+                      </Table.Row>
+                      <Table.Row>
+                        <Table.Cell textAlign="right">
+                          Depression
+                        </Table.Cell>
+                        <Table.Cell>
+                           <Select fluid options={depression} value={data.depression} 
+                            onChange={(e, { value }) => {
+                              data.depression = value;
+                              this.setState({ data });
+                            }}
+                          />
+                        </Table.Cell>
+                      </Table.Row>
+                      <Table.Row>
+                        <Table.Cell textAlign="right">
+                          Kidney Diseases
+                        </Table.Cell>
+                        <Table.Cell>
+                           <Select fluid options={kidney_disease} value={data.kidney_disease} 
+                            onChange={(e, { value }) => {
+                              data.kidney_disease = value;
+                              this.setState({ data });
+                            }}
+                          />
+                        </Table.Cell>
+                      </Table.Row>
+                      <Table.Row>
+                        <Table.Cell textAlign="right">
+                          Diabetes
+                        </Table.Cell>
+                        <Table.Cell>
+                           <Select fluid options={diabetes} value={data.diabetes} 
+                            onChange={(e, { value }) => {
+                              data.diabetes = value;
+                              this.setState({ data });
+                            }}
+                          />
+                        </Table.Cell>
+                      </Table.Row>
+                    </Table.Body>
+                  </Table>
+                }
               </Container>
             </Grid.Column>
-            <Grid.Column stretched>
-              <Container text>
-                {JSON.stringify(this.state.data, null, "\t")}
+            <Grid.Column verticalAlign="middle">
+              <Container text textAlign="center">
+                <Button primary circular size="massive" onClick={this.updateData} icon="save" content="Save"/>
               </Container>
             </Grid.Column>
           </Grid>
