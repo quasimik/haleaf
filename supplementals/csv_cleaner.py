@@ -12,7 +12,7 @@ f.close()
 columns = []
 
 for rows in data:
-	rows.strip('\n')
+	rows = rows.strip('\n')
 	columns.append(rows.split(','))
 
 num_columns = len(columns[0])
