@@ -3,6 +3,295 @@ import "./App.css";
 import { db, auth, provider } from "../firebase";
 import { Header, Button, Segment, Icon, Container, Grid, Menu, Input, Select, Table } from "semantic-ui-react";
 
+const initData = {
+  age_group: -1,
+  height_cm: -1,
+  weight_kg: -1,
+  sex: -1,
+  married: -1,
+  education: -1,
+  employment: -1,
+  income: -1,
+  own_home: -1,
+  veteran: -1,
+  alcohol: -1,
+  smoke: -1,
+  race: -1,
+  state: -1,
+  high_blood_pressure: -1,
+  high_blood_cholesterol: -1,
+  heart_attack: -1,
+  angina: -1,
+  asthma: -1,
+  skin_cancer: -1,
+  other_cancer: -1,
+  copd: -1,
+  arthritis: -1,
+  depression: -1,
+  kidney_disease: -1,
+  diabetes: -1
+}
+
+const age_group = [
+  {value: -1, text: "Select"},
+  {value: 1, text: "18-24"},
+  {value: 2, text: "25-29"},
+  {value: 3, text: "30-34"},
+  {value: 4, text: "35-39"},
+  {value: 5, text: "40-44"},
+  {value: 6, text: "45-49"},
+  {value: 7, text: "50-54"},
+  {value: 8, text: "55-59"},
+  {value: 9, text: "60-64"},
+  {value: 10, text: "65-69"},
+  {value: 11, text: "70-74"},
+  {value: 12, text: "75-79"},
+  {value: 13, text: ">79"},
+];
+
+const height_cm = [
+  {value: -1, text: "Select"},
+  {value: 1, text: "Under 2's"},
+  {value: 2, text: "Later"},
+  {value: 3, text: "Later"},
+  {value: 4, text: "Later"},
+  {value: 5, text: "Later"},
+  {value: 6, text: "Later"},
+  {value: 7, text: "Later"},
+  {value: 8, text: "Later"},
+  {value: 9, text: "Later"},
+  {value: 10, text: "Over 9's"},
+];
+
+const weight_kg = [
+  {value: -1, text: "Select"},
+  {value: 1, text: "Under 2's"},
+  {value: 2, text: "Later"},
+  {value: 3, text: "Later"},
+  {value: 4, text: "Later"},
+  {value: 5, text: "Later"},
+  {value: 6, text: "Later"},
+  {value: 7, text: "Later"},
+  {value: 8, text: "Later"},
+  {value: 9, text: "Later"},
+  {value: 10, text: "Over 9's"},
+];
+
+const sex = [
+  {value: -1, text: "Select"},
+  {value: 1, text: "Male"},
+  {value: 2, text: "Female"},
+];
+
+const married = [
+  {value: -1, text: "Select"},
+  {value: 1, text: "Married"},
+  {value: 2, text: "Divorced"},
+  {value: 3, text: "Widowed"},
+  {value: 4, text: "Separated"},
+  {value: 5, text: "Never married"},
+  {value: 6, text: "Engaged"},
+];
+
+const education = [
+  {value: -1, text: "Select"},
+  {value: 1, text: "Kindergarten or below"},
+  {value: 2, text: "Elementary"},
+  {value: 3, text: "Middle school"},
+  {value: 4, text: "High school"},
+  {value: 5, text: "Bachelor"},
+  {value: 6, text: "Graduate"},
+];
+
+const employment = [
+  {value: -1, text: "Select"},
+  {value: 1, text: "Employed for wages"},
+  {value: 2, text: "Self-employed"},
+  {value: 3, text: "Out of work for at least a year"},
+  {value: 4, text: "Out of work for less than a year"},
+  {value: 5, text: "Homemaker"},
+  {value: 6, text: "Student"},
+  {value: 7, text: "Retired"},
+  {value: 8, text: "Unable to work"},
+];
+
+const income = [
+  {value: -1, text: "Select"},
+  {value: 1, text: "< $15000"},
+  {value: 2, text: "$15000 - $25000"},
+  {value: 3, text: "$25000 - $35000"},
+  {value: 4, text: "$35000 - $50000"},
+  {value: 5, text: "> $50000"},
+];
+
+const own_home = [
+  {value: -1, text: "Select"},
+  {value: 1, text: "Home owner"},
+  {value: 2, text: "Renter"},
+  {value: 3, text: "Other arrangement"},
+];
+
+const veteran = [
+  {value: -1, text: "Select"},
+  {value: 1, text: "Yes"},
+  {value: 2, text: "No"},
+];
+
+// Alcohol is a prompt for amount of times per month that one drinks
+
+const smoke = [
+  {value: -1, text: "Select"},
+  {value: 1, text: "Daily"},
+  {value: 2, text: "Occasionally"},
+  {value: 3, text: "Stopped"},
+  {value: 4, text: "Never"},
+];
+
+const race = [
+  {value: -1, text: "Select"},
+  {value: 1, text: "White"},
+  {value: 2, text: "African American"},
+  {value: 3, text: "Native American/Alaskan Native"},
+  {value: 4, text: "Asian"},
+  {value: 5, text: "Native Hawaiian/Pacific Islander"},
+  {value: 6, text: "Other"},
+  {value: 7, text: "Multiracial"},
+];
+
+const state = [
+  {value: -1, text: "Select"},
+  {value: 1, text: "Alabama"},
+  {value: 2, text: "Alaska"},
+  {value: 4, text: "Arizona"},
+  {value: 5, text: "Arkansas"},
+  {value: 6, text: "California"},
+  {value: 8, text: "Colorado"},
+  {value: 9, text: "Conneticut"},
+  {value: 10, text: "Delaware"},
+  {value: 11, text: "District of Columbia"},
+  {value: 12, text: "Florida"},
+  {value: 13, text: "Georgia"},
+  {value: 15, text: "Hawaii"},
+  {value: 16, text: "Idaho"},
+  {value: 17, text: "Illinois"},
+  {value: 18, text: "Indiana"},
+  {value: 19, text: "Iowa"},
+  {value: 20, text: "Kansas"},
+  {value: 21, text: "Kentucky"},
+  {value: 22, text: "Louisiana"},
+  {value: 23, text: "Maine"},
+  {value: 24, text: "Maryland"},
+  {value: 25, text: "Massachusetts"},
+  {value: 26, text: "Michigan"},
+  {value: 27, text: "Minnesota"},
+  {value: 28, text: "Mississippi"},
+  {value: 29, text: "Missouri"},
+  {value: 30, text: "Montana"},
+  {value: 31, text: "Nebraska"},
+  {value: 32, text: "Nevada"},
+  {value: 33, text: "New Hampshire"},
+  {value: 34, text: "New Jersey"},
+  {value: 35, text: "New Mexico"},
+  {value: 36, text: "New York"},
+  {value: 37, text: "North Carolina"},
+  {value: 38, text: "North Dakota"},
+  {value: 39, text: "Ohio"},
+  {value: 40, text: "Oklahoma"},
+  {value: 41, text: "Oregon"},
+  {value: 42, text: "Pennslyvania"},
+  {value: 44, text: "Rhode Island"},
+  {value: 45, text: "South Carolina"},
+  {value: 46, text: "South Dakota"},
+  {value: 47, text: "Tennesee"},
+  {value: 48, text: "Texas"},
+  {value: 49, text: "Utah"},
+  {value: 50, text: "Vermont"},
+  {value: 51, text: "Virginia"},
+  {value: 53, text: "Washington"},
+  {value: 54, text: "West Virginia"},
+  {value: 55, text: "Wisconsin"},
+  {value: 56, text: "Wyoming"},
+  {value: 66, text: "Guam"},
+  {value: 72, text: "Puerto Rico"},
+];
+
+const high_blood_pressure = [
+  {value: -1, text: "Select"},
+  {value: 1, text: "Yes"},
+  {value: 2, text: "When pregnant"},
+  {value: 3, text: "No"},
+  {value: 4, text: "No, but borderline"},
+];
+
+const high_blood_cholesterol = [
+  {value: -1, text: "Select"},
+  {value: 1, text: "Yes"},
+  {value: 2, text: "No"},
+];
+
+const heart_attack = [
+  {value: -1, text: "Select"},
+  {value: 1, text: "Yes"},
+  {value: 2, text: "No"},
+];
+
+const angina = [
+  {value: -1, text: "Select"},
+  {value: 1, text: "Yes"},
+  {value: 2, text: "No"},
+];
+
+const asthma = [
+  {value: -1, text: "Select"},
+  {value: 1, text: "Yes"},
+  {value: 2, text: "No"},
+];
+
+const skin_cancer = [
+  {value: -1, text: "Select"},
+  {value: 1, text: "Yes"},
+  {value: 2, text: "No"},
+];
+
+const other_cancer = [
+  {value: -1, text: "Select"},
+  {value: 1, text: "Yes"},
+  {value: 2, text: "No"},
+];
+
+const copd = [
+  {value: -1, text: "Select"},
+  {value: 1, text: "Yes"},
+  {value: 2, text: "No"},
+];
+
+const arthritis = [
+  {value: -1, text: "Select"},
+  {value: 1, text: "Yes"},
+  {value: 2, text: "No"},
+];
+
+const depression = [
+  {value: -1, text: "Select"},
+  {value: 1, text: "Yes"},
+  {value: 2, text: "No"},
+];
+
+const kidney_disease = [
+  {value: -1, text: "Select"},
+  {value: 1, text: "Yes"},
+  {value: 2, text: "No"},
+];
+
+const diabetes = [
+  {value: -1, text: "Select"},
+  {value: 1, text: "Yes"},
+  {value: 2, text: "Only when pregnant"},
+  {value: 3, text: "No"},
+  {value: 4, text: "No, but at risk"},
+];
+
+
 class App extends Component {
   
   constructor(props) {
@@ -12,7 +301,7 @@ class App extends Component {
       user: null,
       uid: null,
       ref: null,
-      data: null
+      data: initData
     }
   }
 
@@ -45,221 +334,31 @@ class App extends Component {
   }
 
   getData = (ref) => {
-    ref.once("value").then((snapshot) => {
-      const data = (snapshot.val() && snapshot.val().data) || {};
-      this.setState({ data });
-    });
+    if (ref) {
+      ref.once("value").then((snapshot) => {
+        const data = (snapshot.val()) ? snapshot.val() : initData;
+        this.setState({ data });
+      });
+    }
+    else {
+      this.setState({data: initData});
+    }
+  }
+
+  updateData = () => {
+    const { data, ref } = this.state;
+    ref.set(data);
   }
 
   render() {
+    var { data } = this.state;
+    if (!data) data = initData;
 
-    const age_group = [
-      {value: -1, text: "Select"},
-      {value: 1, text: "18-24"},
-      {value: 2, text: "25-29"},
-      {value: 3, text: "30-34"},
-      {value: 4, text: "35-39"},
-      {value: 5, text: "40-44"},
-      {value: 6, text: "45-49"},
-      {value: 7, text: "50-54"},
-      {value: 8, text: "55-59"},
-      {value: 9, text: "60-64"},
-      {value: 10, text: "65-69"},
-      {value: 11, text: "70-74"},
-      {value: 12, text: "75-79"},
-      {value: 13, text: ">79"},
-    ];
-    
-    const height_cm = [
-      {value: -1, text: "Select"},
-      {value: 1, text: "Under 2's"},
-      {value: 2, text: "Later"},
-      {value: 3, text: "Later"},
-      {value: 4, text: "Later"},
-      {value: 5, text: "Later"},
-      {value: 6, text: "Later"},
-      {value: 7, text: "Later"},
-      {value: 8, text: "Later"},
-      {value: 9, text: "Later"},
-      {value: 10, text: "Over 9's"},
-    ];
-    
-    const weight_kg = [
-      {value: -1, text: "Select"},
-      {value: 1, text: "Under 2's"},
-      {value: 2, text: "Later"},
-      {value: 3, text: "Later"},
-      {value: 4, text: "Later"},
-      {value: 5, text: "Later"},
-      {value: 6, text: "Later"},
-      {value: 7, text: "Later"},
-      {value: 8, text: "Later"},
-      {value: 9, text: "Later"},
-      {value: 10, text: "Over 9's"},
-    ];
-    
-    const sex = [
-      {value: -1, text: "Select"},
-      {value: 1, text: "Male"},
-      {value: 2, text: "Female"},
-    ];
-    
-    const marriage = [
-      {value: -1, text: "Select"},
-      {value: 1, text: "Married"},
-      {value: 2, text: "Divorced"},
-      {value: 3, text: "Widowed"},
-      {value: 4, text: "Separated"},
-      {value: 5, text: "Never married"},
-      {value: 6, text: "Engaged"},
-    ];
-    
-    const education = [
-      {value: -1, text: "Select"},
-      {value: 1, text: "Kindergarten or below"},
-      {value: 2, text: "Elementary"},
-      {value: 3, text: "Middle school"},
-      {value: 4, text: "High school"},
-      {value: 5, text: "Bachlor"},
-      {value: 6, text: "Graduate"},
-    ];
-    
-    const employment - [
-      {value: -1, text: "Select"},
-      {value: 1, text: "Employed for wages"},
-      {value: 2, text: "Self-employed"},
-      {value: 3, text: "Out of work for at least a year"},
-      {value: 4, text: "Out of work for less than a year"},
-      {value: 5, text: "Homemaker"},
-      {value: 6, text: "Student"},
-      {value: 7, text: "Retired"},
-      {value: 8, text: "Unable to work"},
-    ];
-    
-    const income = [
-      {value: -1, text: "Select"},
-      {value: 1, text: "< $15000"},
-      {value: 2, text: "$15000 - $25000"},
-      {value: 3, text: "$25000 - $35000"},
-      {value: 4, text: "$35000 - $50000"},
-      {value: 5, text: "> $50000"},
-    ];
-    
-    const own_home = [
-      {value: -1, text: "Select"},
-      {value: 1, text: "Home owner"},
-      {value: 2, text: "Renter"},
-      {value: 3, text: "Other arrangement"},
-    ]
-    
-    const veteran = [
-      {value: -1, text: "Select"},
-      {value: 1, text: "Yes"},
-      {value: 2, text: "No"},
-    ]
-    
-    // Alcohol is a prompt for amount of times per month that one drinks
-    
-    const smoke = [
-      {value: -1, text: "Select"},
-      {value: 1, text: "Daily"},
-      {value: 2, text: "Occasionally"},
-      {value: 3, text: "Stopped"},
-      {value: 4, text: "Never"},
-    ];
-    
-    const race = [
-      {value: -1, text: "Select"},
-      {value: 1, text: "White"},
-      {value: 2, text: "African American"},
-      {value: 3, text: "Native American/Alaskan Native"},
-      {value: 4, text: "Asian"},
-      {value: 5, text: "Native Hawaiian/Pacific Islander"},
-      {value: 6, text: "Other"},
-      {value: 7, text: "Multiracial"},
-    ]
-    
-    const state = [
-      {value: -1, text: "Select"},
-      {value: 1, text: "Alabama"},
-      {value: 2, text: "Alaska"},
-      {value: 4, text: "Arizona"},
-      {value: 5, text: "Arkansas"},
-      {value: 6, text: "California"},
-      {value: 8, text: "Colorado"},
-      {value: 9, text: "Conneticut"},
-      {value: 10, text: "Delaware"},
-      {value: 11 text: "District of Columnbia"},
-      {value: 12, text: "Florida"},
-      {value: 13, text: "Georgia"},
-      {value: 15, text: "Hawaii"},
-      {value: 16, text: "Idaho"},
-      {value: 17, text: "Illinois"},
-      {value: 18, text: "Indiana"},
-      {value: 19, text: "Iowa"},
-      {value: 20, text: "Kansas"},
-      {value: 21, text: "Kentucky"},
-      {value: 22, text: "Louisiana"},
-      {value: 23, text: "Maine"},
-      {value: 24, text: "Maryland"},
-      {value: 25, text: "Massachusetts"},
-      {value: 26, text: "Michigan"},
-      {value: 27, text: "Minnesota"},
-      {value: 28, text: "Mississippi"},
-      {value: 29, text: "Missouri"},
-      {value: 30, text: "Montana"},
-      {value: 31, text: "Nebraska"},
-      {value: 32, text: "Nevada"},
-      {value: 33, text: "New Hampshire"},
-      {value: 34, text: "New Jersey"},
-      {value: 35, text: "New Mexico"},
-      {value: 36, text: "New York"},
-      {value: 37, text: "North Carolina"},
-      {value: 38, text: "North Dakota"},
-      {value: 39, text: "Ohio"},
-      {value: 40, text: "Oklahoma"},
-      {value: 41, text: "Oregon"},
-      {value: 42, text: "Pennslyvania"},
-      {value: 44, text: "Rhode Island"},
-      {value: 45, text: "South Carolina"},
-      {value: 46, text: "South Dakota"},
-      {value: 47, text: "Tennesee"},
-      {value: 48, text: "Texas"},
-      {value: 49, text: "Utah"},
-      {value: 50, text: "Vermont"},
-      {value: 51, text: "Virginia"},
-      {value: 53, text: "Washington"},
-      {value: 54, text: "West Virginia"},
-      {value: 55, text: "Wisconsin"},
-      {value: 56, text: "Wyoming"},
-      {value: 66, text: "Guam"},
-      {value: 72, text: "Puerto Rico"},
-    ];
-    
-    const high_bp = [
-      {value: -1, text: "Select"},
-      {value: 1, text: "Normally"},
-      {value: 2, text: "When pregnant"},
-      {value: 3, text: "No"},
-      {value: 4, text: "No, but close"},
-    ];
-    
-    // High Chol, Heart Attack, Angina, Asthma, Skin_Cancer, Other, Chronic Obstructive Pulmonary Disease, Arthritis, Depression, Kidney Disease are Yes/No
-    
-    const diabetes = [
-      {value: -1, text: "Select"},
-      {value: 1, text: "Yes"},
-      {value, 2, text: "Only when pregnant"},
-      {value, 3, text: "No"},
-      {value, 4, text: "No, but at risk"},
-    ];
-
-    
     // Logged in
     if (this.state.uid) {
       return (
         <div>
-          <Menu fixed='top' inverted>
+          <Menu fixed="top" inverted size="massive">
             <Container>
               <Menu.Item header>HaleAF</Menu.Item>
               <Menu.Item position="right">{this.state.user.displayName}</Menu.Item>
@@ -269,139 +368,375 @@ class App extends Component {
           <Grid stackable centered columns={2} relaxed="very" style={{marginTop:"1em"}}>
             <Grid.Column>
               <Container text>
-                <Table definition>
-                  <Table.Row>
-                    <Table.Cell>
-                      Age Group: 
-                    </Table.Cell>
-                    <Table.Cell>
-                      <Select fluid options={age_group} placeholder="Select"/>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell>
-                      Height in cm:
-                    </Table.Cell>
-                    <Table.Cell>
-                       <Select fluid options={height_cm} placeholder="Select"/>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell>
-                      Weight in kg:
-                    </Table.Cell>
-                    <Table.Cell>
-                       <Select fluid options={weight_kg} placeholder="Select"/>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell>
-                      Gender:
-                    </Table.Cell>
-                    <Table.Cell>
-                       <Select fluid options={sex} placeholder="Select"/>
-                    </Table.Cell>
-                  </Table.Row>                  
-                 <Table.Row>
-                    <Table.Cell>
-                      Marital Status:
-                    </Table.Cell>
-                    <Table.Cell>
-                       <Select fluid options={marriage} placeholder="Select"/>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell>
-                      Education Level:
-                    </Table.Cell>
-                    <Table.Cell>
-                       <Select fluid options={education} placeholder="Select"/>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell>
-                      Employment Status:
-                    </Table.Cell>
-                    <Table.Cell>
-                       <Select fluid options={employment} placeholder="Select"/>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell>
-                      Income Level:
-                    </Table.Cell>
-                    <Table.Cell>
-                       <Select fluid options={income} placeholder="Select"/>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell>
-                      Housing Status:
-                    </Table.Cell>
-                    <Table.Cell>
-                       <Select fluid options={own_home} placeholder="Select"/>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell>
-                      Veteran:
-                    </Table.Cell>
-                    <Table.Cell>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell>
-                      Monthly alcohol intake:
-                    </Table.Cell>
-                    <Table.Cell>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell>
-                      Smoking Habits:
-                    </Table.Cell>
-                    <Table.Cell>
-                       <Select fluid options={smoke} placeholder="Select"/>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell>
-                      Ethnicity:
-                    </Table.Cell>
-                    <Table.Cell>
-                       <Select fluid options={race} placeholder="Select"/>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell>
-                      State:
-                    </Table.Cell>
-                    <Table.Cell>
-                       <Select fluid options={state} placeholder="Select"/>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell>
-                      Blood Pressure Level:
-                    </Table.Cell>
-                    <Table.Cell>
-                       <Select fluid options={high_bp} placeholder="Select"/>
-                    </Table.Cell>
-                  </Table.Row>
-                  // 9 Other Rows Will be here, Radials
-                  <Table.Row>
-                    <Table.Cell>
-                      Diabetes:
-                    </Table.Cell>
-                    <Table.Cell>
-                       <Select fluid options={diabetes} placeholder="Select"/>
-                    </Table.Cell>
-                  </Table.Row>
+                <Header attached="top" inverted content="Demographics"/>
+                <Table attached definition>
+                  <Table.Body>
+                    <Table.Row>
+                      <Table.Cell textAlign="right">
+                        Age Group
+                      </Table.Cell>
+                      <Table.Cell>
+                        <Select fluid options={age_group} value={data.age_group} 
+                          onChange={(e, { value }) => {
+                            data.age_group = value;
+                            this.setState({ data });
+                          }}
+                        />
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell textAlign="right">
+                        Height
+                      </Table.Cell>
+                      <Table.Cell>
+                        <Input fluid value={(data.height_cm < 1) ? "" : data.height_cm} error={isNaN(data.height_cm) || !data.height_cm}
+                          label={{ basic: true, content: "cm" }}
+                          labelPosition="right"
+                          onChange={(e, { value }) => {
+                            (value === "") ? data.height_cm = -1 : data.height_cm = Number(value);
+                            if (data.height_cm) {
+                              this.setState({ data });
+                            }
+                          }}/>
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell textAlign="right">
+                        Weight
+                      </Table.Cell>
+                      <Table.Cell>
+                        <Input fluid value={(data.weight_kg < 1) ? "" : data.weight_kg} error={isNaN(data.weight_kg) || !data.weight_kg}
+                          label={{ basic: true, content: "kg" }}
+                          labelPosition="right"
+                          onChange={(e, { value }) => {
+                            (value === "") ? data.weight_kg = -1 : data.weight_kg = Number(value);
+                            if (data.weight_kg) {
+                              this.setState({ data });
+                            }
+                          }}/>
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell textAlign="right">
+                        Sex
+                      </Table.Cell>
+                      <Table.Cell>
+                         <Select fluid options={sex} value={data.sex} 
+                          onChange={(e, { value }) => {
+                            data.sex = value;
+                            this.setState({ data });
+                          }}
+                        />
+                      </Table.Cell>
+                    </Table.Row>                  
+                   <Table.Row>
+                      <Table.Cell textAlign="right">
+                        Current Marital Status
+                      </Table.Cell>
+                      <Table.Cell>
+                         <Select fluid options={married} value={data.married} 
+                          onChange={(e, { value }) => {
+                            data.married = value;
+                            this.setState({ data });
+                          }}
+                        />
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell textAlign="right">
+                        Highest Attained Education Level
+                      </Table.Cell>
+                      <Table.Cell>
+                         <Select fluid options={education} value={data.education} 
+                          onChange={(e, { value }) => {
+                            data.education = value;
+                            this.setState({ data });
+                          }}
+                        />
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell textAlign="right">
+                        Current Employment Status
+                      </Table.Cell>
+                      <Table.Cell>
+                         <Select fluid options={employment} value={data.employment} 
+                          onChange={(e, { value }) => {
+                            data.employment = value;
+                            this.setState({ data });
+                          }}
+                        />
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell textAlign="right">
+                        Income Level
+                      </Table.Cell>
+                      <Table.Cell>
+                         <Select fluid options={income} value={data.income} 
+                          onChange={(e, { value }) => {
+                            data.income = value;
+                            this.setState({ data });
+                          }}
+                        />
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell textAlign="right">
+                        Housing Status
+                      </Table.Cell>
+                      <Table.Cell>
+                         <Select fluid options={own_home} value={data.own_home} 
+                          onChange={(e, { value }) => {
+                            data.own_home = value;
+                            this.setState({ data });
+                          }}
+                        />
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell textAlign="right">
+                        Are you a veteran?
+                      </Table.Cell>
+                      <Table.Cell>
+                        <Select fluid options={veteran} value={data.veteran} 
+                          onChange={(e, { value }) => {
+                            data.veteran = value;
+                            this.setState({ data });
+                          }}
+                        />
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell textAlign="right">
+                        Ethnicity
+                      </Table.Cell>
+                      <Table.Cell>
+                         <Select fluid search options={race} value={data.race} 
+                          onChange={(e, { value }) => {
+                            data.race = value;
+                            this.setState({ data });
+                          }}
+                        />
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell textAlign="right">
+                        State of current residence
+                      </Table.Cell>
+                      <Table.Cell>
+                         <Select fluid search options={state} value={data.state} 
+                          onChange={(e, { value }) => {
+                            data.state = value;
+                            this.setState({ data });
+                          }}
+                        />
+                      </Table.Cell>
+                    </Table.Row>
+                  </Table.Body>
                 </Table>
+                <Header attached inverted content="Lifestyle"/>
+                <Table attached definition>
+                  <Table.Body>
+                    <Table.Row>
+                      <Table.Cell textAlign="right">
+                        How many times were you intoxicated in the last month?
+                      </Table.Cell>
+                      <Table.Cell>
+                        <Input fluid value={(data.alcohol < 0) ? "" : data.alcohol} error={isNaN(data.alcohol)}
+                          label={{ basic: true, content: "times" }}
+                          labelPosition="right"
+                          onChange={(e, { value }) => {
+                            (value === "") ? data.alcohol = -1 : data.alcohol = Number(value);
+                            if (!isNaN(value)) {
+                              this.setState({ data });
+                            }
+                          }}/>
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell textAlign="right">
+                        How often do you smoke?
+                      </Table.Cell>
+                      <Table.Cell>
+                         <Select fluid options={smoke} value={data.smoke} 
+                          onChange={(e, { value }) => {
+                            data.smoke = value;
+                            this.setState({ data });
+                          }}
+                        />
+                      </Table.Cell>
+                    </Table.Row>
+                  </Table.Body>
+                </Table>
+                <Header attached inverted content="Do you have a history of:"/>
+                <Table attached="bottom" definition>
+                  <Table.Body>
+                    <Table.Row>
+                      <Table.Cell textAlign="right">
+                        High Blood Pressure/Hypertension
+                      </Table.Cell>
+                      <Table.Cell>
+                         <Select fluid options={high_blood_pressure} value={data.high_blood_pressure} 
+                          onChange={(e, { value }) => {
+                            data.high_blood_pressure = value;
+                            this.setState({ data });
+                          }}
+                        />
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell textAlign="right">
+                        High Cholesterol
+                      </Table.Cell>
+                      <Table.Cell>
+                         <Select fluid options={high_blood_cholesterol} value={data.high_blood_cholesterol} 
+                          onChange={(e, { value }) => {
+                            data.high_blood_cholesterol = value;
+                            this.setState({ data });
+                          }}
+                        />
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell textAlign="right">
+                        Cardiac Arrest/Heart Attack
+                      </Table.Cell>
+                      <Table.Cell>
+                         <Select fluid options={heart_attack} value={data.heart_attack} 
+                          onChange={(e, { value }) => {
+                            data.heart_attack = value;
+                            this.setState({ data });
+                          }}
+                        />
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell textAlign="right">
+                        Angina
+                      </Table.Cell>
+                      <Table.Cell>
+                         <Select fluid options={angina} value={data.angina} 
+                          onChange={(e, { value }) => {
+                            data.angina = value;
+                            this.setState({ data });
+                          }}
+                        />
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell textAlign="right">
+                        Asthma
+                      </Table.Cell>
+                      <Table.Cell>
+                         <Select fluid options={asthma} value={data.asthma} 
+                          onChange={(e, { value }) => {
+                            data.asthma = value;
+                            this.setState({ data });
+                          }}
+                        />
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell textAlign="right">
+                        Skin Cancer/Melanoma
+                      </Table.Cell>
+                      <Table.Cell>
+                         <Select fluid options={skin_cancer} value={data.skin_cancer} 
+                          onChange={(e, { value }) => {
+                            data.skin_cancer = value;
+                            this.setState({ data });
+                          }}
+                        />
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell textAlign="right">
+                        Other Cancers
+                      </Table.Cell>
+                      <Table.Cell>
+                         <Select fluid options={other_cancer} value={data.other_cancer} 
+                          onChange={(e, { value }) => {
+                            data.other_cancer = value;
+                            this.setState({ data });
+                          }}
+                        />
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell collapsing textAlign="right">
+                        Chronic Obstructive Pulmonary Disease (COPD)
+                      </Table.Cell>
+                      <Table.Cell>
+                         <Select fluid options={copd} value={data.copd} 
+                          onChange={(e, { value }) => {
+                            data.copd = value;
+                            this.setState({ data });
+                          }}
+                        />
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell textAlign="right">
+                        Arthritis
+                      </Table.Cell>
+                      <Table.Cell>
+                         <Select fluid options={arthritis} value={data.arthritis} 
+                          onChange={(e, { value }) => {
+                            data.arthritis = value;
+                            this.setState({ data });
+                          }}
+                        />
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell textAlign="right">
+                        Depression
+                      </Table.Cell>
+                      <Table.Cell>
+                         <Select fluid options={depression} value={data.depression} 
+                          onChange={(e, { value }) => {
+                            data.depression = value;
+                            this.setState({ data });
+                          }}
+                        />
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell textAlign="right">
+                        Kidney Diseases
+                      </Table.Cell>
+                      <Table.Cell>
+                         <Select fluid options={kidney_disease} value={data.kidney_disease} 
+                          onChange={(e, { value }) => {
+                            data.kidney_disease = value;
+                            this.setState({ data });
+                          }}
+                        />
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell textAlign="right">
+                        Diabetes
+                      </Table.Cell>
+                      <Table.Cell>
+                         <Select fluid options={diabetes} value={data.diabetes} 
+                          onChange={(e, { value }) => {
+                            data.diabetes = value;
+                            this.setState({ data });
+                          }}
+                        />
+                      </Table.Cell>
+                    </Table.Row>
+                  </Table.Body>
+                </Table>
+                <Button primary size="large" fluid onClick={this.updateData}>Save Info</Button>
               </Container>
             </Grid.Column>
             <Grid.Column stretched>
-              {this.state.uid}
+              <Container text>
+                {JSON.stringify(this.state.data, null, "\t")}
+              </Container>
             </Grid.Column>
           </Grid>
         </div>
@@ -414,7 +749,7 @@ class App extends Component {
         <div className="Landing">
           <Segment basic textAlign="center" vertical>
             <Header as="h1" content="HaleAF"/>
-            <Header as="h2" content="Our pitch goes here???"/>
+            <Header as="h2" content="Discover your projected Quality of Life"/>
             <Button primary size="huge" onClick={this.login} animated>
               <Button.Content visible>
                 Get Started <Icon name="right arrow"/>
