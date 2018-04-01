@@ -61,3 +61,6 @@ typings/
 
 # Virtualenv
 venv
+
+# Data folder
+data/
