@@ -59,9 +59,5 @@ typings/
 
 
 
-
-TensorFlow
-bin
-include
-lib
-pip-selfcheck.json
+# Virtualenv
+venv
