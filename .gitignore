@@ -67,3 +67,6 @@ mlmodel/gcp-credentials.json
 
 # Data folder
 data
+
+# ML CSV files
+mlmodel/*.csv
