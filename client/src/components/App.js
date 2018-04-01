@@ -114,7 +114,7 @@ class App extends Component {
       {value: 6, text: "Engaged"},
     ];
     
-    const engaged = [
+    const education = [
       {value: -1, text: "Select"},
       {value: 1, text: "Kindergarten or below"},
       {value: 2, text: "Elementary"},
@@ -276,6 +276,125 @@ class App extends Component {
                     </Table.Cell>
                     <Table.Cell>
                       <Select fluid options={age_group} placeholder="Select"/>
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      Height in cm:
+                    </Table.Cell>
+                    <Table.Cell>
+                       <Select fluid options={height_cm} placeholder="Select"/>
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      Weight in kg:
+                    </Table.Cell>
+                    <Table.Cell>
+                       <Select fluid options={weight_kg} placeholder="Select"/>
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      Gender:
+                    </Table.Cell>
+                    <Table.Cell>
+                       <Select fluid options={sex} placeholder="Select"/>
+                    </Table.Cell>
+                  </Table.Row>                  
+                 <Table.Row>
+                    <Table.Cell>
+                      Marital Status:
+                    </Table.Cell>
+                    <Table.Cell>
+                       <Select fluid options={marriage} placeholder="Select"/>
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      Education Level:
+                    </Table.Cell>
+                    <Table.Cell>
+                       <Select fluid options={education} placeholder="Select"/>
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      Employment Status:
+                    </Table.Cell>
+                    <Table.Cell>
+                       <Select fluid options={employment} placeholder="Select"/>
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      Income Level:
+                    </Table.Cell>
+                    <Table.Cell>
+                       <Select fluid options={income} placeholder="Select"/>
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      Housing Status:
+                    </Table.Cell>
+                    <Table.Cell>
+                       <Select fluid options={own_home} placeholder="Select"/>
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      Veteran:
+                    </Table.Cell>
+                    <Table.Cell>
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      Monthly alcohol intake:
+                    </Table.Cell>
+                    <Table.Cell>
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      Smoking Habits:
+                    </Table.Cell>
+                    <Table.Cell>
+                       <Select fluid options={smoke} placeholder="Select"/>
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      Ethnicity:
+                    </Table.Cell>
+                    <Table.Cell>
+                       <Select fluid options={race} placeholder="Select"/>
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      State:
+                    </Table.Cell>
+                    <Table.Cell>
+                       <Select fluid options={state} placeholder="Select"/>
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      Blood Pressure Level:
+                    </Table.Cell>
+                    <Table.Cell>
+                       <Select fluid options={high_bp} placeholder="Select"/>
+                    </Table.Cell>
+                  </Table.Row>
+                  // 9 Other Rows Will be here, Radials
+                  <Table.Row>
+                    <Table.Cell>
+                      Diabetes:
+                    </Table.Cell>
+                    <Table.Cell>
+                       <Select fluid options={diabetes} placeholder="Select"/>
                     </Table.Cell>
                   </Table.Row>
                 </Table>
