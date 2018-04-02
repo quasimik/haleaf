@@ -10,7 +10,9 @@ import { Header,
          Menu, 
          Input, 
          Select, 
-         Table } from "semantic-ui-react";
+         Table,
+         Confirm,
+         Statistic } from "semantic-ui-react";
 import { initData,
          dataToVector,
          age_group,
@@ -47,7 +49,8 @@ class App extends Component {
       uid: null,
       ref: null,
       data: initData,
-      tab: "demo"
+      tab: "demo",
+      logoutConfirm: false
     }
   }
 
@@ -74,7 +77,7 @@ class App extends Component {
       const uid = user.uid;
       const ref = db.ref(uid);
       this.getData(ref);
-      this.setState({ user, uid, ref });
+      this.setState({ user, uid, ref, logoutConfirm: false });
     });
   }
 
@@ -89,8 +92,6 @@ class App extends Component {
       this.setState({data: initData});
     }
   }
-
-  handleTab = (e, { name }) => this.setState({ tab: name });
 
   updateData = () => {
     const { data, ref } = this.state;
@@ -110,6 +111,8 @@ class App extends Component {
     this.setState({ prediction });
   }
 
+  handleTab = (e, { name }) => this.setState({ tab: name });
+
   render() {
     var { data, tab } = this.state;
     if (!data) data = initData;
@@ -118,11 +121,18 @@ class App extends Component {
     if (this.state.uid) {
       return (
         <div>
+          <Confirm
+            header="Confirm logout?"
+            open={this.state.logoutConfirm}
+            onCancel={() => this.setState({logoutConfirm: false})}
+            onConfirm={this.logout}
+            size="mini"
+          />
           <Menu fixed="top" inverted size="massive">
             <Container>
               <Menu.Item header>HaleAF</Menu.Item>
               <Menu.Item position="right">{this.state.user.displayName}</Menu.Item>
-              <Menu.Item onClick={this.logout}>Sign Out</Menu.Item>
+              <Menu.Item onClick={() => this.setState({logoutConfirm: true})}>Sign Out</Menu.Item>
             </Container>
           </Menu>
           <Grid stackable centered columns={2} relaxed="very" style={{marginTop:"1em", height:"90vh"}}>
@@ -504,7 +514,7 @@ class App extends Component {
             <Grid.Column stretched verticalAlign="middle">
               <Container text textAlign="center">
                 <Segment basic vertical>
-                  <Header size="huge" content={this.state.prediction ? this.state.prediction : " "} />
+                  <Header size="huge" content={this.state.prediction ? this.state.prediction : " "}/>
                   <Button primary circular size="massive" onClick={this.predict} content="Get your prediction"/>
                 </Segment>
               </Container>
