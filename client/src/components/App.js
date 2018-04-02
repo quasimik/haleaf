@@ -1,43 +1,43 @@
 import React, { Component } from "react";
 import "./App.css";
 import { db, auth, provider } from "../firebase";
-import { Header, 
-         Button, 
-         Segment, 
-         Icon, 
+import { Button, 
+         Confirm,
          Container, 
          Grid, 
-         Menu, 
+         Icon, 
          Input, 
+         Menu, 
+         Segment, 
          Select, 
+         Statistic,
          Table,
-         Confirm,
-         Statistic } from "semantic-ui-react";
-import { initData,
+         Header } from "semantic-ui-react";
+import { age_group,
+         angina,
+         arthritis,
+         asthma,
+         copd,
          dataToVector,
-         age_group,
-         sex,
-         married,
+         depression,
+         diabetes,
          education,
          employment,
-         income,
-         own_home,
-         veteran,
-         smoke,
-         race,
-         state,
-         high_blood_pressure,
-         high_blood_cholesterol,
          heart_attack,
-         angina,
-         asthma,
-         skin_cancer,
-         other_cancer,
-         copd,
-         arthritis,
-         depression,
+         high_blood_cholesterol,
+         high_blood_pressure,
+         income,
          kidney_disease,
-         diabetes } from "../constants"
+         married,
+         other_cancer,
+         own_home,
+         race,
+         sex,
+         skin_cancer,
+         smoke,
+         state,
+         veteran,
+         initData } from "../constants"
 
 class App extends Component {
   
@@ -121,12 +121,8 @@ class App extends Component {
     if (this.state.uid) {
       return (
         <div>
-          <Confirm
-            header="Confirm logout?"
-            open={this.state.logoutConfirm}
-            onCancel={() => this.setState({logoutConfirm: false})}
-            onConfirm={this.logout}
-            size="mini"
+          <Confirm size="mini" header="Confirm logout?" 
+            open={this.state.logoutConfirm} onCancel={() => this.setState({logoutConfirm: false})} onConfirm={this.logout}
           />
           <Menu fixed="top" inverted size="massive">
             <Container>
@@ -145,7 +141,7 @@ class App extends Component {
                   <Menu.Item position="right" active color="blue" onClick={this.updateData} icon="save" content="Save"/>
                 </Menu>
                 {tab === 'demo' &&
-                  <Table attached definition>
+                  <Table attached columns={2} definition>
                     <Table.Body>
                       <Table.Row>
                         <Table.Cell textAlign="right">
@@ -313,7 +309,7 @@ class App extends Component {
                   </Table>
                 }
                 {tab === 'lifestyle' &&
-                  <Table attached definition>
+                  <Table attached columns={2} definition>
                     <Table.Body>
                       <Table.Row>
                         <Table.Cell textAlign="right">
@@ -348,8 +344,13 @@ class App extends Component {
                   </Table>
                 }
                 {tab === 'hist' &&
-                  <Table attached="bottom" definition>
+                  <Table attached="bottom" columns={2} definition>
                     <Table.Body>
+                      <Table.Row>
+                        <Table.Cell colSpan="2">
+                          Have you ever been diagnosed with:
+                        </Table.Cell>
+                      </Table.Row>
                       <Table.Row>
                         <Table.Cell textAlign="right">
                           High Blood Pressure/Hypertension
@@ -442,7 +443,7 @@ class App extends Component {
                         </Table.Cell>
                       </Table.Row>
                       <Table.Row>
-                        <Table.Cell collapsing textAlign="right">
+                        <Table.Cell textAlign="right">
                           Chronic Obstructive Pulmonary Disease (COPD)
                         </Table.Cell>
                         <Table.Cell>
@@ -513,7 +514,7 @@ class App extends Component {
             </Grid.Column>
             <Grid.Column stretched verticalAlign="middle">
               <Container text textAlign="center">
-                <Segment basic vertical>
+                <Segment vertical>
                   <Header size="huge" content={this.state.prediction ? this.state.prediction : " "}/>
                   <Button primary circular size="massive" onClick={this.predict} content="Get your prediction"/>
                 </Segment>
