@@ -63,7 +63,7 @@ typings/
 venv
 
 # GCP service account credentials
-mlmodel/gcp-credentials.json
+gcp-credentials.json
 
 # Data folder
 data
