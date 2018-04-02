@@ -1,0 +1,164 @@
+{
+
+"_AGE_G": {
+  "name": "Imputed age in six groups",
+  "description": "Six-level imputed age category",
+  "type": "discrete",
+  "ordered": true,
+  "options": [
+    {"value": 1, "label": "18-24", "valid": true},
+    {"value": 2, "label": "25-34", "valid": true},
+    {"value": 3, "label": "35-44", "valid": true},
+    {"value": 4, "label": "45-54", "valid": true},
+    {"value": 5, "label": "55-64", "valid": true},
+    {"value": 6, "label": "65+", "valid": true},
+  ]
+},
+
+"HTM4": {
+  "name": "Computed Height in Meters",
+  "description": "Reported height in meters",
+  "type": "continuous",
+  "ordered": true,
+  "options": [
+    {"value": true, "label": "Height in meters [2 implied decimal places]", "valid": true},
+    {"value": null, "label": null, "valid": false},
+  ]
+},
+
+"WTKG3": {
+  "name": "Computed Weight in Kilograms",
+  "description": "Reported weight in kilograms",
+  "type": "continuous",
+  "ordered": true,
+  "options": [
+    {"value": true, "label": "Weight in kilograms [2 implied decimal places]", "valid": true},
+    {"value": 99999, "label": "Don’t know/Refused/Missing", "valid": false},
+  ]
+},
+
+"SEX": {
+  "name": "Respondents Sex",
+  "description": "Indicate sex of respondent.",
+  "type": "binary",
+  "ordered": false,
+  "options": [
+    {"value": 1, "label": "Male", "valid": true},
+    {"value": 2, "label": "Female", "valid": true},
+  ]
+},
+
+"_INCOMG": {
+  "name": "Computed income categories",
+  "description": "Income categories",
+  "type": "discrete",
+  "ordered": true,
+  "options": [
+    {"value": 1, "label": "i < $15000", "valid": true},
+    {"value": 2, "label": "$15000 <= i < $25000", "valid": true},
+    {"value": 3, "label": "$25000 <= i < $35000", "valid": true},
+    {"value": 4, "label": "$35000 <= i < $50000", "valid": true},
+    {"value": 5, "label": "i >= $50000", "valid": true},
+    {"value": 9, "label": "Don’t know/Not sure/Missing", "valid": false},
+  ]
+},
+
+"_SMOKER3": {
+  "name": "Computed Smoking Status",
+  "description": "Four-level smoker status: Everyday smoker, Someday smoker, Former smoker, Non-smoker",
+  "type": "discrete",
+  "ordered": true,
+  "options": [
+    {"value": 1, "label": "Current smoker - now smokes every day", "valid": true},
+    {"value": 2, "label": "Current smoker - now smokes some days", "valid": true},
+    {"value": 3, "label": "Former smoker", "valid": true},
+    {"value": 4, "label": "Never smoked", "valid": true},
+    {"value": 9, "label": "Don’t know/Refused/Missing", "valid": false},
+  ]
+},
+
+"_RACEGR3": {
+  "name": "Computed Five level race/ethnicity category.",
+  "description": "Five-level race/ethnicity category",
+  "type": "discrete",
+  "ordered": false,
+  "options": [
+    {"value": 1, "label": "White only, Non-Hispanic", "valid": true},
+    {"value": 2, "label": "Black only, Non-Hispanic", "valid": true},
+    {"value": 3, "label": "Other race only, Non-Hispanic", "valid": true},
+    {"value": 4, "label": "Multiracial, Non-Hispanic", "valid": true},
+    {"value": 5, "label": "Hispanic", "valid": true},
+    {"value": 9, "label": "Don’t know/Not sure/Refused", "valid": false},
+  ]
+},
+
+"CVDINFR4": {
+  "name": "Ever Diagnosed with Heart Attack",
+  "description": "(Ever told) you had a heart attack, also called a myocardial infarction?",
+  "type": "binary",
+  "ordered": false,
+  "options": [
+    {"value": 1, "label": "Yes", "valid": true},
+    {"value": 2, "label": "No", "valid": true},
+    {"value": 7, "label": "Don’t know/Not sure", "valid": false},
+    {"value": 9, "label": "Refused", "valid": false},
+  ]
+},
+
+"CHCSCNCR": {
+  "name": "Ever told) you had skin cancer?",
+  "description": "(Ever told) you had skin cancer?",
+  "type": "binary",
+  "ordered": false,
+  "options": [
+    {"value": 1, "label": "Yes", "valid": true},
+    {"value": 2, "label": "No", "valid": true},
+    {"value": 7, "label": "Don’t know/Not sure", "valid": false},
+    {"value": 9, "label": "Refused", "valid": false},
+    {"value": null, "label": "Not asked or Missing ", "valid": false},
+  ]
+},
+
+"CHCOCNCR": {
+  "name": "Ever told) you had any other types of cancer?",
+  "description": "(Ever told) you had any other types of cancer?",
+  "type": "binary",
+  "ordered": false,
+  "options": [
+    {"value": 1, "label": "Yes", "valid": true},
+    {"value": 2, "label": "No", "valid": true},
+    {"value": 7, "label": "Don’t know/Not sure", "valid": false},
+    {"value": 9, "label": "Refused", "valid": false},
+  ]
+},
+
+"ADDEPEV2": {
+  "name": "Ever told you had a depressive disorder",
+  "description": "(Ever told) you that you have a depressive disorder, including depression, major depression, dysthymia, or minor depression?",
+  "type": "binary",
+  "ordered": false,
+  "options": [
+    {"value": 1, "label": "Yes", "valid": true},
+    {"value": 2, "label": "No", "valid": true},
+    {"value": 7, "label": "Don’t know/Not sure", "valid": false},
+    {"value": 9, "label": "Refused", "valid": false},
+  ]
+},
+
+"DIABETE3": {
+  "name": "Ever told) you have diabetes",
+  "description": "(Ever told) you have diabetes?",
+  "type": "discrete",
+  "ordered": false,
+  "options": [
+    {"value": 1, "label": "Yes", "valid": true},
+    {"value": 2, "label": "Yes, but female told only during pregnancy", "valid": true},
+    {"value": 3, "label": "No", "valid": true},
+    {"value": 4, "label": "No, pre-diabetes or borderline diabetes", "valid": true},
+    {"value": 7, "label": "Don’t know/Not sure", "valid": false},
+    {"value": 9, "label": "Refused", "valid": false},
+    {"value": null, "label": null, "valid": false},
+  ]
+},
+
+}
