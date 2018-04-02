@@ -70,3 +70,6 @@ data
 
 # ML CSV files
 mlmodel/*.csv
+
+# Jupyter Notebook auto backups
+.ipynb_checkpoints
