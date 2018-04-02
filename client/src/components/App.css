@@ -2,6 +2,10 @@
   min-height: 100vh!important;
 }
 
+h1 {
+  font-size: 5rem!important;
+}
+
 .Landing {
   position: absolute;
   height: 100%;
