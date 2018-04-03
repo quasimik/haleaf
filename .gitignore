@@ -65,8 +65,8 @@ venv
 # GCP service account credentials
 gcp-credentials.json
 
-# Data folder
-data
+# Datasets
+mlmodel/datasets/*.csv
 
 # ML CSV files
 mlmodel/*.csv
